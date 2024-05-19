@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #000000, #333333, #000000);
+            background-size: 200% 200%;
+            animation: gradientAnimation 10s ease infinite;
+            font-family: Arial, sans-serif;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            width: 300px;
+            background-color: #1c1c1c;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .cal {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 10px;
+            max-width: 300px;
+            margin: 20px;
+        }
+
+        .dis {
+            grid-column: span 4;
+            background-color: #f0f0f0;
+            padding: 15px;
+            text-align: right;
+            font-size: 24px;
+            border-radius: 5px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        button {
+            padding: 15px;
+            background-color: #2c2c2c;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            color: #f0f0f0;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #3c3c3c;
+        }
+
+        .opr {
+            background-color: #ffa500;
+            color: #1c1c1c;
+        }
+
+        .opr:hover {
+            background-color: #ffb733;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="cal">
+            <div class="dis" id="dis">0</div>
+            <button onclick="clearEntry()">CE</button>
+            <button onclick="clearAll()">C</button>
+            <button onclick="deleteLast()">X</button>
+            <button onclick="appendToDisplay('%')" class="opr"><b>%</b></button>
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button onclick="appendToDisplay('+')" class="opr"><b>+</b></button>
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button onclick="appendToDisplay('-')" class="opr"><b>-</b></button>
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button onclick="appendToDisplay('*')" class="opr"><b>*</b></button>
+            <button onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')" class="opr"><b>.</b></button>
+            <button onclick="calculate()"><b>=</b></button>
+            <button onclick="appendToDisplay('/')" class="opr"><b>/</b></button>
+        </div>
+    </div>
+
+    <script>
+        let dis = document.getElementById('dis');
+        let exp = '';
+
+        function clearDisplay() {
+            dis.textContent = '0';
+            exp = '';
+        }
+
+        function appendToDisplay(value) {
+            if (value === '%') {
+                let percentage = parseFloat(dis.textContent) / 100;
+                dis.textContent = percentage;
+                exp = percentage;
+            } else {
+                if (dis.textContent === '0' && value !== '.') {
+                    dis.textContent = '';
+                }
+                dis.textContent += value;
+                exp += value;
+            }
+        }
+
+        function clearEntry() {
+            dis.textContent = '0';
+            exp = '';
+        }
+
+        function clearAll() {
+            clearEntry();
+        }
+
+        function deleteLast() {
+            if (dis.textContent.length > 1) {
+                dis.textContent = dis.textContent.slice(0, -1);
+                exp = exp.slice(0, -1);
+            } else {
+                clearEntry();
+            }
+        }
+
+        function calculate() {
+            try {
+                let result = eval(exp);
+                dis.textContent = result;
+                exp = result;
+            } catch (error) {
+                dis.textContent = 'Error';
+                exp = '';
+            }
+        }
+    </script>
+</body>
+</html>
